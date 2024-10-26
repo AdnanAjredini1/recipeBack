@@ -32,20 +32,26 @@ const firebaseStorage = getStorage(app);
 
 const server = express();
 server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
 server.use(
   session({
     secret: "ERENNNN",
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 60 * 244,
     },
   })
 );
 server.use(passport.initialize());
 server.use(passport.session());
-server.use(bodyParser.json());
-server.use(cors());
+
+server.use(
+  cors({
+    origin: "http://localhost:5173", // replace with your frontend's address
+    credentials: true, // allows cookies and sessions
+  })
+);
 const saltRounds = 10;
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -59,6 +65,51 @@ const db = new pg.Client({
 });
 
 db.connect();
+
+passport.use(
+  "local",
+  new Strategy(async function verify(username, password, cb) {
+    console.log(username, password);
+    try {
+      const checkResult = await db.query(
+        "SELECT * FROM users WHERE email = $1 ",
+        [username]
+      );
+      if (checkResult.rows.length > 0) {
+        const user = checkResult.rows[0];
+        const storedHashedPassword = user.password;
+        bcrypt.compare(
+          password,
+          storedHashedPassword,
+          async function (err, result) {
+            if (err) {
+              return cb(err);
+            } else {
+              if (result) {
+                return cb(null, user);
+              } else {
+                return cb(null, false, { message: "Incorrect password" });
+              }
+            }
+          }
+        );
+      } else {
+        return cb(null, false, { message: "User not found" });
+      }
+    } catch (err) {
+      return cb(err);
+    }
+  })
+);
+
+passport.serializeUser((user, cb) => {
+  console.log("User serialized", user);
+  cb(null, user);
+});
+passport.deserializeUser((user, cb) => {
+  console.log("deserialized user", user);
+  cb(null, user);
+});
 
 db.query("SELECT * FROM  users", (err, res) => {
   if (err) {
@@ -76,7 +127,7 @@ server.get("/", async (req, res) => {
     console.log("not authenticated");
   }
 
-  console.log(req.user, "useri ktu");
+  console.log(req.user, "useri ktuuuuuu");
   res.send(user);
 });
 
@@ -196,9 +247,8 @@ server.delete("/api/posts/:id", async (req, res) => {
 server.post("/api/posts", upload.single("image"), async (req, res) => {
   const { title, category, cookingTime, description } = req.body;
   const file = req.file;
-  const useriKtu = req.user;
-  console.log();
-  
+  console.log("the logged in user", req.user);
+  console.log(req.isAuthenticated());
 
   console.log(
     req.file,
@@ -206,8 +256,6 @@ server.post("/api/posts", upload.single("image"), async (req, res) => {
     category,
     cookingTime,
     description,
-
-    "req file ----------------------------------------------------"
   );
 
   if (!file) {
@@ -219,7 +267,14 @@ server.post("/api/posts", upload.single("image"), async (req, res) => {
 
     const result = await db.query(
       "INSERT INTO posts (title, content,post_image, cooking_time, category,user_id) VALUES ($1, $2, $3, $4, $5,  $6) RETURNING *",
-      [title, description, downloadURL, cookingTime, category,"2asdkfjknekjnakw5e7asdfa7r57we7sa4f4s"]
+      [
+        title,
+        description,
+        downloadURL,
+        cookingTime,
+        category,
+        "7b195ba0-dc4e-426e-8128-0345214b6f99",
+      ]
     );
     res.status(201).json({ post: result.rows[0] });
   } catch (err) {
@@ -282,62 +337,32 @@ server.post("/api/register", upload.single("image"), async (req, res) => {
   }
 });
 
-server.post(
-  "/api/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
-    failureFlash: true,
-  })
-);
-
-passport.use(
-  "local",
-  new Strategy({ usernameField: "email" }, async function verify(
-    email,
-    password,
-    cb
-  ) {
-    console.log(email, password);
-    try {
-      const checkResult = await db.query(
-        "SELECT * FROM users WHERE email = $1",
-        [email]
-      );
-      if (checkResult.rows.length > 0) {
-        const user = checkResult.rows[0];
-        console.log(user, "----------------user from passport");
-
-        const storedHashedPassword = user.password;
-        bcrypt.compare(
-          password,
-          storedHashedPassword,
-          async function (err, result) {
-            if (err) {
-              return cb(err);
-            } else {
-              if (result) {
-                return cb(null, user);
-              } else {
-                return cb(null, false, { message: "Incorrect password" });
-              }
-            }
-          }
-        );
-      } else {
-        return cb(null, false, { message: "User not found" });
+server.post("/api/login", (req, res, next) => {
+  passport.authenticate(
+    "local",
+    { successRedirect: "/", failureRedirect: "/", failureFlash: true },
+    (err, user) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ message: "An error occurred", error: err });
       }
-    } catch (err) {
-      return cb(err);
+      if (!user) {
+        return res
+          .status(401)
+          .json({ message: "Incorrect username or password" });
+      }
+      req.login(user, (loginErr) => {
+        if (loginErr) {
+          return res
+            .status(500)
+            .json({ message: "Login error", error: loginErr });
+          }
+          res.status(200).json({ message: "Login successful", user });
+          return next(req, res);
+      });
     }
-  })
-);
-
-passport.serializeUser((user, cb) => {
-  cb(null, user);
-});
-passport.deserializeUser((user, cb) => {
-  cb(null, user);
+  )(req, res, next);
 });
 
 server.listen(3001, (req, res) => {
