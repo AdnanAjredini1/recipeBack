@@ -7,6 +7,8 @@ import passport from "passport";
 import { db } from "./storage/db.js";
 import routes from "./routes/index.js";
 import './strategies/local-strategy.js'
+// import './strategies/google-strategy.js'
+import bcrypt from 'bcrypt'
 
 dotenv.config();
 

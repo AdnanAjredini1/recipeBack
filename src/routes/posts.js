@@ -17,10 +17,10 @@ router.get("/api/posts", async (req, res) => {
 
 router.get("/api/posts", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM posts");
+    const result = await db.query("SELECT * FROM posts ORDER BY created_at ASC");
     res.status(200).json(result.rows);
   } catch (err) {
-    console.error("Error fetching data (posts):", error);
+    console.error("Error fetching data (posts):", err);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -117,8 +117,10 @@ router.delete("/api/posts/:id", async (req, res) => {
 router.post("/api/posts", upload.single("image"), async (req, res) => {
   const { title, category, cookingTime, description } = req.body;
   const file = req.file;
+  const user_id = req.user.user_id
   console.log("the logged in user", req.user);
   console.log(req.isAuthenticated());
+
 
   console.log(req.file, title, category, cookingTime, description);
 
@@ -137,7 +139,7 @@ router.post("/api/posts", upload.single("image"), async (req, res) => {
         downloadURL,
         cookingTime,
         category,
-        "7b195ba0-dc4e-426e-8128-0345214b6f99",
+        user_id,
       ]
     );
     res.status(201).json({ post: result.rows[0] });
