@@ -5,6 +5,24 @@ import { upload } from "../storage/multer.js";
 
 const router = new Router();
 
+router.get('/posts/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+ 
+    const result = await db.query(
+      'SELECT * FROM posts WHERE user_id = $1',
+      [user_id]
+    );
+
+  
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
 router.get("/api/posts", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM posts");

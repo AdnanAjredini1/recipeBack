@@ -4,6 +4,29 @@ import { db } from "../storage/db.js";
 const router = new Router();
 
 
+
+router.get("/likes/user/:user_id", async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const result = await db.query(
+            `SELECT p.*
+             FROM posts p
+             JOIN likes l ON p.post_id = l.post_id
+             WHERE l.user_id = $1`,
+            [user_id]
+        );
+
+        const likedPosts = result.rows;
+
+        res.status(200).json(likedPosts);
+    } catch (error) {
+        console.error("Error fetching liked posts:", error);
+        res.status(500).json({ error: "Error fetching liked posts" });
+    }
+});
+
+
 router.get("/like/:post_id", async (req, res) => {
     const { post_id } = req.params;
     const user_id = req.user.user_id;
