@@ -54,6 +54,8 @@ server.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
+      httpOnly: true,
+      sameSite: 'None',
       maxAge: 1000 * 60 * 60 * 60 * 244,
     },
   })
