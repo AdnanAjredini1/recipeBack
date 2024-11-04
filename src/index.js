@@ -17,7 +17,7 @@ const server = express();
 const httpServer = http.createServer(server);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://recipeback-ijkr.onrender.com",
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -63,7 +63,7 @@ server.use(passport.session());
 
 server.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://recipeback-ijkr.onrender.com",
     credentials: true,
   })
 );
