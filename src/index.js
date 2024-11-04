@@ -6,18 +6,51 @@ import session from "express-session";
 import passport from "passport";
 import { db } from "./storage/db.js";
 import routes from "./routes/index.js";
-import './strategies/local-strategy.js'
+import "./strategies/local-strategy.js";
 // import './strategies/google-strategy.js'
-import bcrypt from 'bcrypt'
-
+import bcrypt from "bcrypt";
+import { Server } from "socket.io";
+import http, { createServer } from "http";
 dotenv.config();
 
 const server = express();
+const httpServer = http.createServer(server);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+export { io };
+io.on("connect", (socket) => {
+  console.log("a user connected ==================================================================================================================");
+});
+
+// io.use((socket, next) => {
+//   sessionMiddleware(socket.request, {}, next);
+// });
+
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("registerUser", (userId) => {
+    console.log(`User ${userId} registered with socket ID: ${socket.id}`);
+    socket.join(`user_${userId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
   session({
-    secret: "ERENNNN",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -27,8 +60,6 @@ server.use(
 );
 server.use(passport.initialize());
 server.use(passport.session());
-
-
 
 server.use(
   cors({
@@ -45,20 +76,17 @@ db.connect((err) => {
   }
 });
 
-
 server.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     console.log("authenticated");
   } else {
     console.log("not authenticated");
   }
-  res.send('welcome');
+  res.send("welcome");
 });
 
 server.use(routes);
 
-server.listen(3001, (req, res) => {
+httpServer.listen(3001, (req, res) => {
   console.log("Server is running at port 3001");
 });
-
-

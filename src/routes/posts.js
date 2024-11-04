@@ -28,7 +28,7 @@ router.get("/api/posts", async (req, res) => {
     const result = await db.query("SELECT * FROM posts");
     res.status(200).json(result.rows);
   } catch (err) {
-    console.error("Error fetching data (posts):", error);
+    console.error("Error fetching data (posts):", err);
     res.status(500).json({ message: "Server error" });
   }
 });

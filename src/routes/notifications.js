@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { db } from "../storage/db.js";
+import {io} from '../index.js'
 
 const router = new Router();
 
@@ -11,6 +12,9 @@ router.post("/notification", async (req, res) => {
             "INSERT INTO notifications (user_id, message, type, post_id, read) VALUES ($1, $2, $3, $4, $5) RETURNING *",
             [userId, message, type, postId, false]
         );
+        io.to(`user_${userId}`).emit("newNotification", result.rows[0]);
+        console.log(result.rows[0], "new notificationnnnnnnnnnnnnnnnnnnnnnnnn");
+        
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error("Error creating notification:", error);
@@ -31,6 +35,7 @@ router.get("/notification/:userId", async (req, res) => {
         );
         
         res.status(200).json(result.rows);
+        // io.to(`user_${userId}`).emit("newNotification", result.rows[0]);
 
         console.log(result, "rsult, from notifiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
         
@@ -58,6 +63,7 @@ router.put("/markAsRead", async (req, res) => {
 
      
         if (result.rowCount > 0) {
+            io.to(`user_${userId}`).emit("notificationsMarkedAsRead");
             res.status(200).json({ message: "Notifications marked as read." });
         } else {
             res.status(404).json({ message: "No notifications found to mark as read." });
