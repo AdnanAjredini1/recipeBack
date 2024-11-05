@@ -55,10 +55,7 @@ server.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 24,
-      httpOnly: true,
-     secure: process.env.NODE_ENV === 'production',
-      sameSite: 'None',
-      domain: 'recipeback-ijkr.onrender.com',
+     
     },
   })
 );
@@ -67,7 +64,7 @@ server.use(passport.session());
 
 server.use(
   cors({
-    origin: "https://chefieebaa.vercel.app",
+    origin: "http://localhost:5173/",
     credentials: true,
   })
 );
