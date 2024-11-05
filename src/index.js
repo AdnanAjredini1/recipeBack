@@ -55,7 +55,7 @@ server.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 24,
-      sameSite: "none",
+      sameSite: 'none',
       
     },
   })
