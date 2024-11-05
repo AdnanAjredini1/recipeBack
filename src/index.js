@@ -55,10 +55,10 @@ server.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 24,
-      // httpOnly: true,
-      // secure: true,
-      // sameSite: 'none',
-      // domain: 'recipeback-ijkr.onrender.com',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      domain: 'recipeback-ijkr.onrender.com',
     },
   })
 );
