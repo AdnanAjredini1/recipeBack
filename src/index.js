@@ -57,7 +57,7 @@ server.use(
       maxAge: 1000 * 60 * 60 * 60 * 244,
       secure: true,
       httpOnly: true,
-      // sameSite: "Lax",
+    sameSite: 'None'
     },
   })
 );
