@@ -57,7 +57,7 @@ server.use(
       secure: true, 
       httpOnly: true,
       sameSite: "None",
-      maxAge: 1000 * 60 * 60 * 60 * 244,
+      maxAge: 1000 * 60 * 60 * 60 * 24,
 
     },
   })
