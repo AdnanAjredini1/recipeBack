@@ -14,20 +14,20 @@ import http, { createServer } from "http";
 dotenv.config();
 
 const server = express();
-const httpServer = http.createServer(server);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "https://chefieebaa.vercel.app",
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
-export { io };
-io.on("connect", (socket) => {
-  console.log(
-    "a user connected =================================================================================================================="
-  );
-});
+// const httpServer = http.createServer(server);
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: "https://chefieebaa.vercel.app",
+//     methods: ["GET", "POST"],
+//     credentials: true,
+//   },
+// });
+// export { io };
+// io.on("connect", (socket) => {
+//   console.log(
+//     "a user connected =================================================================================================================="
+//   );
+// });
 
 // io.use((socket, next) => {
 //   sessionMiddleware(socket.request, {}, next);
@@ -90,7 +90,6 @@ server.get("/", async (req, res) => {
 });
 
 server.use(routes);
-
-httpServer.listen(3001, (req, res) => {
+server.listen(3001, (req, res) => {
   console.log("Server is running at port 3001");
 });
