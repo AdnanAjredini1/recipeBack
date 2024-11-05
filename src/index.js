@@ -24,13 +24,14 @@ const io = new Server(httpServer, {
 });
 export { io };
 io.on("connect", (socket) => {
-  console.log("a user connected ==================================================================================================================");
+  console.log(
+    "a user connected =================================================================================================================="
+  );
 });
 
 // io.use((socket, next) => {
 //   sessionMiddleware(socket.request, {}, next);
 // });
-
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
@@ -45,7 +46,6 @@ io.on("connection", (socket) => {
   });
 });
 
-
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
@@ -54,10 +54,9 @@ server.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-    // secure: "production",
-    //   httpOnly: true,
-      // sameSite: "None",
       maxAge: 1000 * 60 * 60 * 60 * 244,
+      httpOnly: true,
+      sameSite: "Lax",
     },
   })
 );
