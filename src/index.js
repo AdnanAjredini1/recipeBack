@@ -15,7 +15,7 @@ dotenv.config();
 
 const server = express();
 // const httpServer = http.createServer(server);
-// const io = new Server(httpServer, {
+const io = new Server();
 //   cors: {
 //     origin: "https://chefieebaa.vercel.app",
 //     methods: ["GET", "POST"],
