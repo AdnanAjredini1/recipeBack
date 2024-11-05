@@ -56,7 +56,7 @@ server.use(
     cookie: {
     secure: "production",
       httpOnly: true,
-      sameSite: "None",
+      // sameSite: "None",
       maxAge: 1000 * 60 * 60 * 60 * 244,
     },
   })
