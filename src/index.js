@@ -58,7 +58,7 @@ server.use(
       httpOnly: true,
 
       secure: true,
-      sameSite: "none",
+      sameSite: 'none',
     },
   })
 );
