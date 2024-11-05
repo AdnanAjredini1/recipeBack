@@ -22,7 +22,7 @@ const io = new Server();
 //     credentials: true,
 //   },
 // });
-// export { io };
+export { io };
 // io.on("connect", (socket) => {
 //   console.log(
 //     "a user connected =================================================================================================================="
@@ -33,18 +33,18 @@ const io = new Server();
 //   sessionMiddleware(socket.request, {}, next);
 // });
 
-io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("User connected:", socket.id);
 
-  socket.on("registerUser", (userId) => {
-    console.log(`User ${userId} registered with socket ID: ${socket.id}`);
-    socket.join(`user_${userId}`);
-  });
+//   socket.on("registerUser", (userId) => {
+//     console.log(`User ${userId} registered with socket ID: ${socket.id}`);
+//     socket.join(`user_${userId}`);
+//   });
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("User disconnected:", socket.id);
+//   });
+// });
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
