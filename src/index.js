@@ -64,7 +64,7 @@ server.use(passport.session());
 
 server.use(
   cors({
-    origin: "http://localhost:5173/",
+    origin: "https://chefieebaa.vercel.app/",
     credentials: true,
   })
 );
