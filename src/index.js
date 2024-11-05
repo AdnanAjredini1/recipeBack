@@ -17,7 +17,7 @@ const server = express();
 const httpServer = http.createServer(server);
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://recipeback-ijkr.onrender.com",
+    origin: "https://chefieebaa.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -66,7 +66,7 @@ server.use(passport.session());
 
 server.use(
   cors({
-    origin: "https://recipeback-ijkr.onrender.com",
+    origin: "https://chefieebaa.vercel.app",
     credentials: true,
   })
 );
