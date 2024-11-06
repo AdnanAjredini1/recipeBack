@@ -90,3 +90,5 @@ server.use(routes);
 server.listen(3001, (req, res) => {
   console.log("Server is running at port 3001");
 });
+
+export default server;
