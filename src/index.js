@@ -33,11 +33,11 @@ server.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store,
+ 
     cookie: {
-      // httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
-      // sameSite: 'None',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'None',
       maxAge: 1000 * 60 * 60 * 60 * 24,
     
      
