@@ -8,4 +8,7 @@ export const db = new pg.Client({
     database: process.env.DATABASE,
     password: process.env.DATABASE_PASSWORD,
     port: 5432,
+    ssl: {
+      rejectUnauthorized: false  
+    },
   });
