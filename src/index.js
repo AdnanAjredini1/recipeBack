@@ -16,12 +16,7 @@ dotenv.config();
 const server = express();
 // const httpServer = http.createServer(server);
 const io = new Server();
-//   cors: {
-//     origin: "https://chefieebaa.vercel.app",
-//     methods: ["GET", "POST"],
-//     credentials: true,
-//   },
-// });
+
 export { io };
 
 const store = new session.MemoryStore();
@@ -36,8 +31,8 @@ server.use(
  
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'None',
+      // secure: process.env.NODE_ENV === 'production',
+      // sameSite: 'None',
       maxAge: 1000 * 60 * 60 * 60 * 24,
     
      
