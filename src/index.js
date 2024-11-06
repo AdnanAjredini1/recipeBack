@@ -23,28 +23,8 @@ const io = new Server();
 //   },
 // });
 export { io };
-// io.on("connect", (socket) => {
-//   console.log(
-//     "a user connected =================================================================================================================="
-//   );
-// });
 
-// io.use((socket, next) => {
-//   sessionMiddleware(socket.request, {}, next);
-// });
-
-// io.on("connection", (socket) => {
-//   console.log("User connected:", socket.id);
-
-//   socket.on("registerUser", (userId) => {
-//     console.log(`User ${userId} registered with socket ID: ${socket.id}`);
-//     socket.join(`user_${userId}`);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User disconnected:", socket.id);
-//   });
-// });
+const store = new session.MemoryStore();
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
@@ -53,11 +33,13 @@ server.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store,
     cookie: {
       // httpOnly: true,
       // secure: process.env.NODE_ENV === 'production',
       // sameSite: 'None',
       maxAge: 1000 * 60 * 60 * 60 * 24,
+    
      
     },
   })
