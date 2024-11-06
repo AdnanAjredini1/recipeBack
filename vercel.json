@@ -1,4 +1,7 @@
-{
+
+
+
+  {
     "version": 2,
     "builds": [
       {
@@ -11,5 +14,10 @@
         "src": "/(.*)",
         "dest": "src/index.js"
       }
-    ]
+    ],
+    "functions": {
+      "src/*.js": {
+        "maxDuration": 30
+      }
+    }
   }
