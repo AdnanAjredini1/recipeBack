@@ -32,7 +32,7 @@ server.use(
     //   ssl: { rejectUnauthorized: false },
     // }),
     secret: process.env.SESSION_SECRET,
-    resave: true,
+    resave: false,
     saveUninitialized: true,
 
     cookie: {
