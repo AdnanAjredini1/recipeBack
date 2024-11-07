@@ -50,6 +50,8 @@ server.use(
   cors({
     origin: "https://chefieebaa.vercel.app",
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
