@@ -27,7 +27,7 @@ server.use(bodyParser.json());
 server.use(
   session({
     store: new PgSession({
-      conString: "dpg-csk7rlbtq21c73djgm40-a/recipesbackend",
+      conString: process.env.DATABASE_HOST,
       ssl: { rejectUnauthorized: false },
     }),
     secret: process.env.SESSION_SECRET,
@@ -35,9 +35,9 @@ server.use(
     saveUninitialized: true,
 
     cookie: {
-     httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
+    //  httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 60 * 24,
     },
   })
