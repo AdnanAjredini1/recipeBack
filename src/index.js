@@ -21,23 +21,23 @@ const io = new Server();
 
 export { io };
 
-
+const store = new session.MemoryStore();
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
   session({
-    store: new PgSession({
-      conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend",
-      ssl: { rejectUnauthorized: false },
-    }),
+    // store: new PgSession({
+    //   conString: process.env.DATABASE_URL,
+    //   ssl: { rejectUnauthorized: false },
+    // }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
 
     cookie: {
      httpOnly: true,
-      secure: 'production',
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 60 * 24,
     },
