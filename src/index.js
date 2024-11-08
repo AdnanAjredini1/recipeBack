@@ -29,7 +29,7 @@ server.use(
   session({
     store: new PgSession({
       conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend",
-      ssl: true,
+     
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
