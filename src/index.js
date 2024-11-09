@@ -15,7 +15,7 @@ import pgSession from "connect-pg-simple";
 dotenv.config();
 const { Pool } = pg;
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a/recipesbackend",
   ssl: { rejectUnauthorized: false },
 });
 
