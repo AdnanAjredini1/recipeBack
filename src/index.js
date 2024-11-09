@@ -16,9 +16,10 @@ import pg from "pg"
 dotenv.config();
 const { Pool } = pg;
 const pool = new Pool({
-  connectionString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a/recipesbackend",
+  connectionString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend",
   ssl: { rejectUnauthorized: false },
 });
+
 
 const PgSession = pgSession(session);
 
