@@ -38,6 +38,9 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/auth/status", (req, res) => {
+  console.log('====================================');
+  console.log(req.headers.cookie);
+  console.log('====================================');
   if (req.isAuthenticated()) {
     res.json({ loggedIn: true, user: req.user });
   } else {
