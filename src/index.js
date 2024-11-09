@@ -10,42 +10,51 @@ import "./strategies/local-strategy.js";
 // import './strategies/google-strategy.js'
 import bcrypt from "bcrypt";
 import { Server } from "socket.io";
-import pgSession from "connect-pg-simple";
-import pg from "pg"
-
+import http, { createServer } from "http";
 dotenv.config();
-const { Pool } = pg;
-const pool = new Pool({
-  connectionString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend",
-  ssl: { rejectUnauthorized: false },
-});
-
-
-const PgSession = pgSession(session);
 
 const server = express();
-const io = new Server();
-
+const httpServer = http.createServer(server);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "https://chefieebaa.vercel.app",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 export { io };
+io.on("connect", (socket) => {
+  console.log("a user connected ==================================================================================================================");
+});
 
+// io.use((socket, next) => {
+//   sessionMiddleware(socket.request, {}, next);
+// });
+
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("registerUser", (userId) => {
+    console.log(`User ${userId} registered with socket ID: ${socket.id}`);
+    socket.join(`user_${userId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
 
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
   session({
-    // store: new PgSession({
-    //   pool: pool, 
-    // }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-
     cookie: {
-    //  httpOnly: true,
-    //   secure: process.env.NODE_ENV === 'production',
-    //   sameSite: 'none',
-      maxAge: 1000 * 60 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 60 * 244,
     },
   })
 );
@@ -56,8 +65,6 @@ server.use(
   cors({
     origin: "https://chefieebaa.vercel.app",
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
 
@@ -78,16 +85,8 @@ server.get("/", async (req, res) => {
   res.send("welcome");
 });
 
-server.get("/check-session", (req, res) => {
-  console.log("Session data:", req.session);
-  res.json({ session: req.session });
-});
-
 server.use(routes);
-server.listen(3001, (req, res) => {
+
+httpServer.listen(3001, (req, res) => {
   console.log("Server is running at port 3001");
 });
-
-export default server;
-
-//Helloooooo
