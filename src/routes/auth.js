@@ -102,32 +102,40 @@ router.post("/api/register", upload.single("image"), async (req, res) => {
   }
 });
 
-router.post("/api/login", (req, res, next) => {
-  passport.authenticate(
-    "local",
-    { successRedirect: "/", failureRedirect: "/", failureFlash: true },
-    (err, user) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ message: "An error occurred", error: err });
-      }
-      if (!user) {
-        return res
-          .status(401)
-          .json({ message: "Incorrect username or password" });
-      }
-      req.login(user, (loginErr) => {
-        if (loginErr) {
-          return res
-            .status(500)
-            .json({ message: "Login error", error: loginErr });
-        }
-        res.status(200).json({ message: "Login successful", user });
-        return next(req, res);
-      });
-    }
-  )(req, res, next);
-});
+router.post(
+	"/api/login",
+	passport.authenticate("local"),
+	(request, response) => {
+		response.sendStatus(200);
+	}
+);
+
+// router.post("/api/login", (req, res, next) => {
+//   passport.authenticate(
+//     "local",
+//     { successRedirect: "/", failureRedirect: "/", failureFlash: true },
+//     (err, user) => {
+//       if (err) {
+//         return res
+//           .status(500)
+//           .json({ message: "An error occurred", error: err });
+//       }
+//       if (!user) {
+//         return res
+//           .status(401)
+//           .json({ message: "Incorrect username or password" });
+//       }
+//       req.login(user, (loginErr) => {
+//         if (loginErr) {
+//           return res
+//             .status(500)
+//             .json({ message: "Login error", error: loginErr });
+//         }
+//         res.status(200).json({ message: "Login successful", user });
+//         return next(req, res);
+//       });
+//     }
+//   )(req, res, next);
+// });
 
 export default router;
