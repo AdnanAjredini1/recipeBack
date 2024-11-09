@@ -27,19 +27,19 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
   session({
-    store: new PgSession({
-      conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend?sslmode=require",
+    // store: new PgSession({
+    //   conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend?sslmode=require",
 
    
-    }),
+    // }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
 
     cookie: {
-     httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
+    //  httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: 'none',
       maxAge: 10000 * 60 * 60 * 60 * 24,
     },
   })
