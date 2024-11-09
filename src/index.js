@@ -13,6 +13,11 @@ import { Server } from "socket.io";
 import pgSession from "connect-pg-simple";
 
 dotenv.config();
+const { Pool } = pg;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
 const PgSession = pgSession(session);
 
@@ -27,19 +32,17 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
   session({
-    // store: new PgSession({
-    //   conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend?sslmode=require",
-
-   
-    // }),
+    store: new PgSession({
+      pool: pool, 
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
 
     cookie: {
-    //  httpOnly: true,
-    //   secure: process.env.NODE_ENV === 'production',
-    //   sameSite: 'none',
+     httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
       maxAge: 10000 * 60 * 60 * 60 * 24,
     },
   })
