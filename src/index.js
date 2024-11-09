@@ -11,9 +11,10 @@ import "./strategies/local-strategy.js";
 import bcrypt from "bcrypt";
 import { Server } from "socket.io";
 import pgSession from "connect-pg-simple";
+import pg from "pg"
 
 dotenv.config();
-const { Pool } = db;
+const { Pool } = pg;
 const pool = new Pool({
   connectionString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a/recipesbackend",
   ssl: { rejectUnauthorized: false },
