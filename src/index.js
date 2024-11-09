@@ -28,8 +28,9 @@ server.use(bodyParser.json());
 server.use(
   session({
     store: new PgSession({
-      conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a/recipesbackend",
-      ssl: { rejectUnauthorized: false },
+      conString: "postgresql://recipesbackend_user:wr8IS4bpGtvgtRyQjYSpzRgX0V0mJyaR@dpg-csk7rlbtq21c73djgm40-a.frankfurt-postgres.render.com/recipesbackend?sslmode=require",
+
+   
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
