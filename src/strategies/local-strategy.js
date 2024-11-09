@@ -8,9 +8,13 @@ passport.serializeUser((user, cb) => {
     cb(null, user);
 });
 
-passport.deserializeUser((user, cb) => {
-    console.log("deserialized user", user);
-    cb(null, user);
+passport.deserializeUser((id, done) => {
+  db.query('SELECT * FROM users WHERE id = $1', [id], (err, result) => {
+    if (err) {
+      return done(err);
+    }
+    return done(null, result.rows[0]);
+  });
 });
   
 export default passport.use(

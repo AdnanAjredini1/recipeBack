@@ -45,7 +45,7 @@ server.use(
      httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'none',
-      maxAge: 10000 * 60 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 60 * 24,
     },
   })
 );
@@ -76,6 +76,11 @@ server.get("/", async (req, res) => {
     console.log("not authenticated");
   }
   res.send("welcome");
+});
+
+server.get("/check-session", (req, res) => {
+  console.log("Session data:", req.session);
+  res.json({ session: req.session });
 });
 
 server.use(routes);
