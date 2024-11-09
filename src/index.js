@@ -34,9 +34,9 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(
   session({
-    store: new PgSession({
-      pool: pool, 
-    }),
+    // store: new PgSession({
+    //   pool: pool, 
+    // }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
