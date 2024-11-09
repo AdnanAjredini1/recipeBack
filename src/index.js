@@ -21,7 +21,7 @@ const io = new Server();
 
 export { io };
 
-const store = new session.MemoryStore();
+
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
