@@ -57,7 +57,7 @@ server.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 244,
       secure: true, // Ensures cookies are only sent over HTTPS
-      httpOnly: true, // Prevents JavaScript access to cookies
+      httpOnly: false, // Prevents JavaScript access to cookies
       sameSite: 'none',
     
     },
