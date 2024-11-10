@@ -54,12 +54,13 @@ server.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    proxy:true,
     name:"GOKU",
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 244,
       secure: true, // Ensures cookies are only sent over HTTPS
      httpOnly: false,   // Prevents client-side access
-    //   sameSite: 'None',
+      sameSite: 'none',
     
     },
   })
