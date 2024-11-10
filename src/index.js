@@ -44,7 +44,7 @@ io.on("connection", (socket) => {
     console.log("User disconnected:", socket.id);
   });
 });
-
+server.use(express.static("public"));
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
@@ -57,8 +57,8 @@ server.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 244,
       secure: true, // Ensures cookies are only sent over HTTPS
-      httpOnly: false, // Prevents JavaScript access to cookies
-      sameSite: 'none',
+     httpOnly: true,   // Prevents client-side access
+      sameSite: 'None',
     
     },
   })
