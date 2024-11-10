@@ -52,13 +52,13 @@ server.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false, // Better for production
     cookie: {
-      maxAge: 1000 * 60 * 60 * 60 * 244,
-      secure: true, // Ensures cookies are only sent over HTTPS
-      httpOnly: true, // Prevents JavaScript access to cookies
-      sameSite: 'none',
-      domain:"recipeback-ijkr.onrender.com"
+      maxAge: 1000 * 60 * 60 * 24, // Set the appropriate maxAge
+      secure: isProduction, // true only in production for HTTPS
+      httpOnly: true,
+      sameSite: isProduction ? "none" : "lax", // 'none' for cross-site cookies in production
+      domain: isProduction ? ".onrender.com" : undefined, // Apply domain only in production
     },
   })
 );
