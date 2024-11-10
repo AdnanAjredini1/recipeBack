@@ -55,7 +55,7 @@ server.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 60 * 244,
-      domain:"https://recipeback-ijkr.onrender.com"
+      domain:"recipeback-ijkr.onrender.com"
     },
   })
 );
