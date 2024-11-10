@@ -70,7 +70,7 @@ server.use(passport.session());
 
 server.use(
   cors({
-    origin: "https://chefieebaa.vercel.app",
+    origin: "https://recipes-elkos.vercel.app",
     credentials: true,
   })
 );
