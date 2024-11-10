@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
   });
 });
 server.use(express.static("public"));
+server.set('trust proxy', 1)
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
